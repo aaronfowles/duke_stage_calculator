@@ -1,0 +1,83 @@
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body style=="background-color:#CCE5FF">
+
+    <div ng-app="DSapp" ng-controller="DSctrl">
+    <div class="container center-block">
+    <div class="row">
+    <div class="panel panel-group panel-primary center-block">
+    <div class="panel-heading">
+    <h1>Duke's Stage Calculator</h1>
+    <h4>A tool to determine the Duke's Stage classification for patients with colorectal cancer</h4>
+    </div>
+    <div class="panel-body">
+    <form role="form" class="form-horizontal">
+      <div class="form-group">
+      <label class="control-label" for="Tumour">Primary tumour progression</label>
+      <select class="form-control" name="Tumour" ng-model="tumour">
+        <option value="T1">The tumour is confined to the submucosa</option>
+        <option value="T2">The tumour has grown into (but not through) the muscularis propria</option>
+        <option value="T3">The tumour has grown into (but not through) the serosa</option>
+        <option value="T4">The tumour has penetrated through the serosa and the peritoneal surface</option>
+      </select>
+      </div>
+      <div class="form-group">
+      <label class="control-label" for="Node">Lymph node involvement</label>
+      <select class="form-control" name="Node" ng-model="nodes">
+        <option value="N0">No lymph nodes contain tumour cells</option>
+        <option value="N1">There are tumour cells in <strong>up to 3</strong> regional lymph nodes</option>
+        <option value="N2">There are tumour cells in <strong> 4 or more </strong> regional lymph nodes</option>        
+      </select>
+      </div>
+      <div class="form-group">
+      <label class="control-label" for="Metastases">Metastasis</label>
+      <select class="form-control" name="metastases" ng-model="metastases">
+        <option value="M0"><strong>No</strong> metastasis to distant organs</option>
+        <option value="M1">Metastasis to distant organs</option>
+      </select>
+      </div>
+      <div class="form-group">
+      <button type="button" class="btn btn-primary center-block" ng-click="calc()">Calculate</button>
+      </div>  
+    </form>
+    </div>
+    <h3 ng-show="output">The Duke's Stage of this patient is <strong>Stage {{ output }}</strong></h3>
+    </div>
+    </div>
+    </div>
+    </div>
+    <script>
+    var app = angular.module('DSapp', []);
+    app.controller('DSctrl', function($scope) {
+      $scope.tumour = "";
+      $scope.nodes = "";
+      $scope.metastases = "";
+      $scope.output = "";
+
+      $scope.calc = function() {
+      console.log('called!')
+      console.log($scope.tumour)
+      console.log($scope.nodes)
+      console.log($scope.metastases)
+      if(($scope.tumour == "T1" || $scope.tumour == "T2") && $scope.nodes == "N0" && $scope.metastases == "M0") {
+          $scope.output = "A";
+      }
+      else if(($scope.tumour == "T3" || $scope.tumour == "T4") && $scope.nodes == "N0" && $scope.metastases == "M0") {
+          $scope.output = "B";
+      } 
+      else if(($scope.nodes == "N1" || $scope.nodes =="N2") && $scope.metastases == "M0") {
+          $scope.output = "C";
+      }
+      else if ($scope.tumour.length != 0 && $scope.nodes.length != 0 && $scope.metastases.length != 0){
+          $scope.output = "D";
+      }
+
+}
+
+});
+    </script>
+  </body>
+</html>
